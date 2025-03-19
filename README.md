@@ -1,1 +1,1 @@
-#This is the my main branch for my Parallel and Distributed computing repository
+This repository is for parallel and distributed computing course. All labs and assignments in the course wil be done here.
