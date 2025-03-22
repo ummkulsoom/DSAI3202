@@ -12,10 +12,11 @@ ProcessPoolExecutor was the slowest. While it’s good for readability and abstr
 
 Conclusion: Multiprocessing is only useful when the task is heavy enough to offset the overhead of process management. For lightweight operations, sequential code can outperform or match parallel solutions.
 
+(Performance may vary based on system configuration. The fastest approach on my system was apply_async, but this might differ on other machines due to differences in CPU architecture and multiprocessing overhead.)
+
 
 
 In this simulation, we tested a connection pool with a maximum of 3 connections shared across 6 processes.
-
 
 Behavior Observed:
 Only 3 processes (Task-0, Task-1, Task-2) could acquire a connection immediately.
