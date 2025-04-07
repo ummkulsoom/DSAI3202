@@ -26,22 +26,22 @@ else:
 distance_matrix = comm.bcast(distance_matrix, root=0)  # Broadcast to all processes
 
 # Parameters
-num_nodes = distance_matrix.shape[0]
+num_of_nodes = distance_matrix.shape[0]
 population_size = 10000
-num_generations = 200
+num_of_generations = 200
 mutation_rate = 0.9
 stagnation_limit = 10  # Increase stagnation limit for more stable runs
 
 # Distribute population across MPI processes
 local_population_size = max(1, population_size // size)  # Ensure at least 1 individual per rank
-local_population = generate_unique_population(local_population_size, num_nodes)
+local_population = generate_unique_population(local_population_size, num_of_nodes)
 
 # Initialize tracking variables
 best_fitness = float('inf')
 stagnation_counter = 0
 
 # Main GA loop
-for generation in range(num_generations):
+for generation in range(num_of_generations):
     print(f"Process {rank}: Starting generation {generation}", flush=True)
 
     # Calculate fitness for local population
@@ -105,9 +105,9 @@ if rank == 0:
 
 # Final evaluation (only rank 0 prints results)
 # Validate the best solution
-def is_valid_route(route, num_nodes):
+def is_valid_route(route, num_of_nodes):
     """Check if the route visits all cities exactly once and starts at 0."""
-    return len(set(route)) == num_nodes and route[0] == 0
+    return len(set(route)) == num_of_nodes and route[0] == 0
 
 # Gather entire population at rank 0 to find the best solution
 all_population = comm.gather(local_population, root=0)
@@ -118,16 +118,16 @@ if rank == 0:
     best_solution = all_population[best_idx]
     
     # Ensure the best solution is valid
-    if not is_valid_route(best_solution, num_nodes):
+    if not is_valid_route(best_solution, num_of_nodes):
         print(" Invalid route detected! Attempting to fix...", flush=True)
         
         # Remove duplicates while maintaining order
         best_solution = list(dict.fromkeys(best_solution))
         
         # Find missing nodes and add them back
-        missing_nodes = list(set(range(num_nodes)) - set(best_solution))
+        missing_nodes = list(set(range(num_of_nodes)) - set(best_solution))
         np.random.shuffle(missing_nodes)  # Shuffle to avoid bias
-        best_solution.extend(missing_nodes[:num_nodes - len(best_solution)])  # Fill in missing nodes
+        best_solution.extend(missing_nodes[:num_of_nodes - len(best_solution)])  # Fill in missing nodes
         
         print(" Fixed Route:", best_solution, flush=True)
 
