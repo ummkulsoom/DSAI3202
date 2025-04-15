@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 pygame
 matplotlib 
 pandas
 numpy
-=======
-pandas
-scikit-learn
-pytest
->>>>>>> origin/Assignment2
+
