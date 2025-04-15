@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 Main entry point for the maze runner game.
 """
@@ -40,6 +39,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-=======
-# your code goes here
->>>>>>> origin/Assignment2
