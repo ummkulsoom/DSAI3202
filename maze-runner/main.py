@@ -9,6 +9,7 @@ import sys
 from typing import Tuple, List
 from src.game import run_game
 from src.explorer import Explorer
+from src.enhanced_explorer import EnhancedExplorer
 from src.maze import create_maze
 
 
@@ -18,7 +19,7 @@ def run_explorer(maze, explorer_id: int) -> Tuple[float, int, int, int]:
     Returns: (time_taken, moves_count, backtrack_count, explorer_id)
     """
     try:
-        explorer = Explorer(maze, visualize=False)  # Disable visualization for parallel runs
+        explorer = EnhancedExplorer(maze, visualize=False)  # Use EnhancedExplorer for parallel runs
         start_time = time.perf_counter()  # Use high-precision timer
         _, moves = explorer.solve()
         time_taken = time.perf_counter() - start_time
@@ -132,8 +133,9 @@ def main():
         else:
             # Run single explorer (original behavior)
             maze = create_maze(args.width, args.height, args.type)
-            explorer = Explorer(maze, visualize=args.visualize)
-            time_taken, moves = explorer.solve()
+            explorer = EnhancedExplorer(maze, visualize=args.visualize)  # Use EnhancedExplorer here too
+            path, moves = explorer.solve()
+            time_taken = explorer.end_time - explorer.start_time
             print(f"Maze solved in {time_taken:.2f} seconds")
             print(f"Number of moves: {len(moves)}")
             if args.type == "static":
