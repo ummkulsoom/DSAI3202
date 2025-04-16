@@ -149,7 +149,8 @@ class Explorer:
         print(f"Total time taken: {time_taken:.2f} seconds")
         print(f"Total moves made: {len(self.moves)}")
         print(f"Number of backtrack operations: {self.backtrack_count}")
-        print(f"Average moves per second: {len(self.moves)/time_taken:.2f}")
+        moves_per_second = len(self.moves) / time_taken if time_taken > 0 else float('inf')
+        print(f"Average moves per second: {moves_per_second:.2f}")
         print("==================================\n")
 
     def solve(self) -> Tuple[float, List[Tuple[int, int]]]:
