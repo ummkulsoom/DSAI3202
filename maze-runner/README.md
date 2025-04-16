@@ -307,11 +307,92 @@ Modify the main program to run multiple maze explorers simultaneously. This is b
 - Do not visualize the exploration, just run it in parallel
 - Store results for comparison
 
-**To answer this question:** 
-1. Study the current explorer implementation
-2. Design a parallel execution system
-3. Implement task distribution
-4. Create a results comparison system
+### MPI Implementation (For 30 Points)
+
+To run the maze solver using MPI across multiple machines:
+
+1. First, ensure you have MPI installed on all machines:
+```bash
+# On Ubuntu/Debian
+sudo apt-get install mpich
+
+# On CentOS/RHEL
+sudo yum install mpich-devel
+
+# On Windows (using conda)
+conda install mpi4py
+```
+
+2. Install the required Python packages:
+```bash
+pip install -r requirements.txt
+```
+
+3. Create a hostfile (e.g., `hostfile.txt`) listing your machines:
+```
+localhost slots=4
+machine1 slots=4
+machine2 slots=4
+```
+
+4. Run the distributed maze solver:
+```bash
+# Run with 8 processes across machines listed in hostfile
+mpirun -n 8 -f hostfile.txt python main_mpi.py --type static
+
+# Run locally with 4 processes
+mpirun -n 4 python main_mpi.py --type random --width 50 --height 50
+```
+
+The MPI implementation offers several advantages:
+1. True distributed computing across multiple machines
+2. Efficient communication using MPI's optimized protocols
+3. Better scalability for large numbers of explorers
+4. Reduced memory usage per machine
+
+Key Features:
+- Master process (rank 0) creates and broadcasts the maze
+- Each process runs an independent explorer
+- Results are gathered and analyzed by the master process
+- Detailed statistics for each explorer and overall performance
+- Works with both random and static mazes
+- Supports custom maze dimensions
+
+Example output:
+```
+Starting distributed maze solving with 4 processes...
+
+=== Distributed Exploration Results ===
+Explorer 1 (Process 0):
+Time taken: 0.15 seconds
+Number of moves: 1279
+Backtrack operations: 0
+
+Explorer 2 (Process 1):
+Time taken: 0.14 seconds
+Number of moves: 1285
+Backtrack operations: 2
+
+Explorer 3 (Process 2):
+Time taken: 0.16 seconds
+Number of moves: 1290
+Backtrack operations: 1
+
+Explorer 4 (Process 3):
+Time taken: 0.15 seconds
+Number of moves: 1282
+Backtrack operations: 1
+
+=== Summary Statistics ===
+Total execution time: 0.18 seconds
+Average moves per explorer: 1284.0
+Average time per explorer: 0.15 seconds
+
+=== Best Performer ===
+Explorer 1 (Process 0) found the best solution:
+Time: 0.15 seconds
+Moves: 1279
+```
 
 ### Question 3 (10 points)
 Analyze and compare the performance of different maze explorers on the static maze. Your analysis should:
