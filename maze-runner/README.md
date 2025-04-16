@@ -240,6 +240,59 @@ Your answer should demonstrate a clear understanding of:
 - The backtracking strategy
 - The performance metrics collected
 
+### Answer to Question 1
+
+The automated maze explorer uses a sophisticated combination of the right-hand rule algorithm with backtracking to solve mazes. Through testing with different maze configurations (random, static, and varying sizes), we can observe the following key aspects:
+
+1. **Algorithm Used by the Explorer**
+The explorer implements the right-hand rule algorithm with the following characteristics:
+- Always prioritizes turning right first when possible
+- If right is blocked, tries to move forward
+- If forward is blocked, attempts to turn left
+- If all options are blocked, turns around
+- Maintains a consistent direction preference throughout exploration
+- Keeps track of visited positions to avoid redundant exploration
+
+2. **Loop Handling Mechanism**
+The explorer has a robust loop detection and handling system:
+- Maintains a `move_history` deque that tracks the last 3 positions
+- Uses the `is_stuck()` method to detect loops by checking if the last 3 moves are identical
+- When a loop is detected, it triggers the backtracking mechanism
+- This prevents the explorer from getting stuck in infinite loops
+- Allows the explorer to explore alternative paths effectively
+
+3. **Backtracking Strategy**
+The explorer employs an intelligent backtracking strategy:
+- Uses `find_backtrack_path()` to search backwards through move history
+- Looks for positions with multiple available choices
+- Returns to the last position with multiple options
+- Resets the backtrack path after finding a new route
+- Increments the backtrack counter for performance tracking
+- Continues exploration from the new position with fresh options
+
+4. **Statistics and Performance Metrics**
+The explorer provides comprehensive statistics through the `print_statistics()` method:
+- Total time taken to solve the maze
+- Total number of moves made
+- Number of backtrack operations performed
+- Average moves per second
+
+From our test runs, we observed:
+- Random Maze (30x30):
+  - Time: 11.81 seconds
+  - Moves: 350
+  - No backtrack operations
+- Static Maze:
+  - Time: 42.98 seconds
+  - Moves: 1279
+  - Average moves per second: 29.76
+- Large Random Maze (50x50):
+  - Time: 17.95 seconds
+  - Moves: 533
+  - No backtrack operations
+
+These statistics demonstrate the explorer's adaptability to different maze configurations and its efficiency in finding solutions.
+
 ### Question 2 (30 points)
 Modify the main program to run multiple maze explorers simultaneously. This is because we want to find the best route out of the maze. Your solution should:
 1. Allow running multiple explorers in parallel
